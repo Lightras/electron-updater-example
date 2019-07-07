@@ -1,6 +1,6 @@
 {
   "name": "electron-updater-example",
-  "version": "0.7.1",
+  "version": "0.7.3",
   "main": "main.js",
   "description": "electron-updater example project",
   "author": "Matt Haggard",
@@ -16,13 +16,16 @@
     "electron-updater": "^4.0.6"
   },
   "build": {
-    "appId": "com.github.iffy.electronupdaterexample",
-    "mac": {
-      "category": "your.app.category.type",
+    "win": {
       "target": [
-        "zip",
-        "dmg"
-      ]
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "compression": "store"
     }
   }
 }
