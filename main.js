@@ -2,20 +2,7 @@
 // See LICENSE for details
 
 const {app, BrowserWindow, Menu, protocol, ipcMain} = require('electron');
-const log = require('electron-log');
 const {autoUpdater} = require("electron-updater");
-
-//-------------------------------------------------------------------
-// Logging
-//
-// THIS SECTION IS NOT REQUIRED
-//
-// This logging setup is not required for auto-updates to work,
-// but it sure makes debugging easier :)
-//-------------------------------------------------------------------
-autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = 'info';
-log.info('App starting...');
 
 //-------------------------------------------------------------------
 // Define the menu
@@ -55,7 +42,6 @@ if (process.platform === 'darwin') {
 let win;
 
 function sendStatusToWindow(text) {
-    log.info(text);
     win.webContents.send('message', text);
 }
 function createDefaultWindow() {
@@ -64,7 +50,8 @@ function createDefaultWindow() {
     win.on('closed', () => {
         win = null;
     });
-    win.loadURL(`file://${__dirname}/version.html#v${app.getVersion()}`);
+
+    win.loadURL(`http://localhost:4200`);
     return win;
 }
 
@@ -113,9 +100,9 @@ app.on('window-all-closed', () => {
 // This will immediately download an update, then install when the
 // app quits.
 //-------------------------------------------------------------------
-app.on('ready', function()  {
-  autoUpdater.checkForUpdatesAndNotify();
-});
+// app.on('ready', function()  {
+//   autoUpdater.checkForUpdatesAndNotify();
+// });
 
 //-------------------------------------------------------------------
 // Auto updates - Option 2 - More control
@@ -128,11 +115,12 @@ app.on('ready', function()  {
 // Uncomment any of the below events to listen for them.  Also,
 // look in the previous section to see them being used.
 //-------------------------------------------------------------------
-// app.on('ready', function()  {
-//   autoUpdater.checkForUpdates();
-// });
+app.on('ready', function()  {
+  autoUpdater.checkForUpdates();
+});
 // autoUpdater.on('checking-for-update', () => {
-// })
+//
+// });
 // autoUpdater.on('update-available', (info) => {
 // })
 // autoUpdater.on('update-not-available', (info) => {
@@ -142,5 +130,5 @@ app.on('ready', function()  {
 // autoUpdater.on('download-progress', (progressObj) => {
 // })
 // autoUpdater.on('update-downloaded', (info) => {
-//   autoUpdater.quitAndInstall();  
+//   autoUpdater.quitAndInstall();
 // })
